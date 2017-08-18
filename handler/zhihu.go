@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"regexp"
 	"time"
 
 	"encoding/json"
@@ -162,17 +163,19 @@ func getItem(name string) []map[string]interface{} {
 	if err != nil {
 		log.Println(err)
 	}
-	// log.Printf("content=%v\n", v[0]["content"])
-	log.Printf("url=%v\n", path.Join(baseURL, v[0]["url"].(string)))
-	log.Printf("title=%v\n", v[0]["title"])
-	// log.Printf("des=%v\n", v[0]["content"])
-	log.Printf("pubDate =%v\n", v[0]["publishedTime"].(string))
-	a, err := time.Parse(time.RFC3339, v[0]["publishedTime"].(string))
-	if err != nil {
-		log.Println(err)
+	for k, _ := range v[0] {
+		log.Printf("key=%v\n", k)
 	}
-	log.Printf("time=%v\n", a)
-	log.Printf("author =%v\n", v[0]["author"].(map[string]interface{})["name"].(string))
+	log.Printf("titleImage =%v\n", v[0]["titleImage"])
+	log.Printf("snapshorURL=%v\n", v[0]["snapshortUrl"])
+	regex, err := regexp.Compile(`<img src="(v2-[0-9a-zA-Z]{32}.jpg)"`)
+	res := regex.FindAllString(v[0]["content"].(string), 3)
+	if res != nil {
+		log.Printf("img res  =%v\n", res[0])
+		log.Printf("img res2 =%v\n", res[1])
+	}
+	replacedstr := regex.ReplaceAllString(v[0]["content"].(string), "<img src=\"https://pic4.zhimg.com/$1\"")
+	v[0]["content"] = replacedstr
 
 	return v
 }
