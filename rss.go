@@ -16,7 +16,7 @@ func main() {
 	// r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Get("/zhihu/:articleName", handler.GetArticle)
+	r.Get("/zhihu/{articleName}", handler.GetArticle)
 	r.Get("/v1/:dbname/:id", handler.GetDB)
 	r.Get("/zhihu_image", handler.GetImage)
 	logrus.Info("Rss run at :6334")

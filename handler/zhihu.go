@@ -158,7 +158,10 @@ func getItem(name string) []map[string]interface{} {
 	}
 	// log.Println(resp.Body)
 	v := []map[string]interface{}{}
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil
+	}
 	err = json.Unmarshal(body, &v)
 	if err != nil {
 		log.Println(err)
@@ -166,15 +169,16 @@ func getItem(name string) []map[string]interface{} {
 	for k, _ := range v[0] {
 		log.Printf("key=%v\n", k)
 	}
-	log.Printf("titleImage =%v\n", v[0]["titleImage"])
-	log.Printf("snapshorURL=%v\n", v[0]["snapshortUrl"])
+	fmt.Printf("titleImage =%v\n", v[0]["titleImage"])
+	fmt.Printf("snapshorURL=%v\n", v[0]["snapshortUrl"])
 	regex, err := regexp.Compile(`<img src="(v2-[0-9a-zA-Z]{32}.jpg)"`)
 	res := regex.FindAllString(v[0]["content"].(string), 3)
 	if res != nil {
-		log.Printf("img res  =%v\n", res[0])
-		log.Printf("img res2 =%v\n", res[1])
+		fmt.Printf("img res  =%v\n", res[0])
 	}
-	replacedstr := regex.ReplaceAllString(v[0]["content"].(string), "<img src=\"https://pic4.zhimg.com/$1\"")
+	// refControl := "http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl="
+	refControl := "http://172.104.105.215:6334/zhihu_image?image="
+	replacedstr := regex.ReplaceAllString(v[0]["content"].(string), fmt.Sprintf("<img src=\"%vhttps://pic4.zhimg.com/$1\"", refControl))
 	v[0]["content"] = replacedstr
 
 	return v
