@@ -1,0 +1,8 @@
+version: '3.0'
+services:
+  rss:
+    image: nlimpid/rss
+    restart: always
+    container_name: rss
+    ports:
+     - "6334:6334"
