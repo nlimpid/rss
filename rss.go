@@ -15,7 +15,7 @@ func main() {
 	// r.Use(middleware.RequestID)
 	// r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
-
+	r.Get("/home", handler.GetHome)
 	r.Get("/zhihu/{articleName}", handler.GetArticle)
 	r.Get("/v1/:dbname/:id", handler.GetDB)
 	r.Get("/zhihu_image", handler.GetImage)
