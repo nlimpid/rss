@@ -15,7 +15,7 @@ func Test_getPost(t *testing.T) {
 		want ZhihuPost
 	}{
 		// TODO: Add test cases.
-		{"test1", args{"yuanmu96"}, ZhihuPost{"前端黑板报",
+		{"test1", args{"undefined"}, ZhihuPost{"前端黑板报",
 			"前端黑板报由各大互联网公司的资深前端和技术专家合力运营，致力于传播高质量的行业资讯，分享有态度的意见观点。"}},
 	}
 	for _, tt := range tests {
