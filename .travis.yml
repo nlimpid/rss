@@ -3,8 +3,8 @@ language: go
 service:
 - docker
 script: 
-  go test $(go list ./... | grep -v /vendor/)
-  docker build -t nlimpid/rss .
+  - go test $(go list ./... | grep -v /vendor/)
+  - docker build -t nlimpid/rss .
 env:
   global:
   - secure: umEL/ysfJtnzR1rC1NW7Yav5IIHsbia0YXD3dA6IYABA6aWnTrx7SFDv5m4P9VtIzrw4dQmX4FgiO8OLXDGh11IHSTQQlOQE99kKaGdnfH3fV6X59RHHDXZUT1itJ5VmFsUzhCxRQRFwheZE/BAh+nTOis92K6XiD052P0StyD+m38d5sXItjO37xp/tw/bgUz/xxNbsadaxyi8SWv4iILUIBxxaHSI4UETQp6hmJKTrQw6zY36Cc1OP2RQ1fq+7Bl/2TlcVsjq1uyfW2eQ7w6nMp31SUdHsM30CbaZQgTZ5sXUdviBuR7zftHjpKbXp34p8vWFLDNtvpWTpYih6IJzyVXtKsoZ91husy70hXHcVP3ry+NO46/HyhFJFRBzyGnk1I7W78ixEW3TW5oAQuofOal6NTSuopYWTVxob4+TWNcMfqmlQZ7BGL9AZDxp+PZZg/Cv56fghuivlwsawmAyWWpW6aPJ/bh8gDJt7hhbSU59dHUZAbRblOBDLoq49pH8DQupHwo+k2IHRGphzogEdMGZTyyZggwJDOWyM1zsTYxDrCjH7NACElFrg4w+0uR95dMPEdg2lnE3bacaaAP/AcdQuACtmu55JvD5cGG49DbL/Bg3G9KHeFDcwc8g5Vv7/WfSmxqRWmUvUl2UAEM1BzmaXKwZHW2pYqdOFSOY=
