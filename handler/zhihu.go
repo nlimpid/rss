@@ -176,7 +176,8 @@ func getItem(name string) []map[string]interface{} {
 		replacedstr := regex.ReplaceAllString(j["content"].(string), fmt.Sprintf("<img src=\"%vhttps://pic4.zhimg.com/$1\"", refControl))
 		titleImage := j["titleImage"]
 		if titleImage.(string) != "" {
-			titleImageStr := fmt.Sprintf("<img src=\"%v\">", j["titleImage"])
+			replaceImage := fmt.Sprintf("%s%s", "https://rss.nlimpid.com/zhihu_image?image=", j["titleImage"])
+			titleImageStr := fmt.Sprintf("<img src=\"%v\">", replaceImage)
 			v[i]["content"] = fmt.Sprintf("%s%s", titleImageStr, replacedstr)
 		}
 		v[i]["content"] = replacedstr
