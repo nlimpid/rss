@@ -175,12 +175,15 @@ func getItem(name string) []map[string]interface{} {
 		refControl := "https://rss.nlimpid.com/zhihu_image?image="
 		replacedstr := regex.ReplaceAllString(j["content"].(string), fmt.Sprintf("<img src=\"%vhttps://pic4.zhimg.com/$1\"", refControl))
 		titleImage := j["titleImage"]
+		log.Printf("origin title Image =%s\n", titleImage.(string))
 		if titleImage.(string) != "" {
 			replaceImage := fmt.Sprintf("%s%s", "https://rss.nlimpid.com/zhihu_image?image=", j["titleImage"])
 			titleImageStr := fmt.Sprintf("<img src=\"%v\">", replaceImage)
+			log.Printf("titleImageStr=%s\n", titleImageStr)
 			v[i]["content"] = fmt.Sprintf("%s%s", titleImageStr, replacedstr)
+		} else {
+			v[i]["content"] = replacedstr
 		}
-		v[i]["content"] = replacedstr
 	}
 	for k, _ := range v[0] {
 		log.Printf("key=%v\n", k)
