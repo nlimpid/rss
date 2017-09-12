@@ -166,7 +166,7 @@ func getItem(name string) []map[string]interface{} {
 	if err != nil {
 		log.Println(err)
 	}
-	regex, err := regexp.Compile(`<img src="(v2-[0-9a-zA-Z]{32}.jpg)"`)
+	regex, err := regexp.Compile(`<img src="(v2-[0-9a-zA-Z]{32}.(png|jpg|gif))"`)
 	for i, j := range v {
 		res := regex.FindAllString(j["content"].(string), 3)
 		if res != nil {
@@ -185,19 +185,5 @@ func getItem(name string) []map[string]interface{} {
 			v[i]["content"] = replacedstr
 		}
 	}
-	for k, _ := range v[0] {
-		log.Printf("key=%v\n", k)
-	}
-	fmt.Printf("titleImage =%v\n", v[0]["titleImage"])
-	fmt.Printf("snapshorURL=%v\n", v[0]["snapshortUrl"])
-	res := regex.FindAllString(v[0]["content"].(string), 3)
-	if res != nil {
-		fmt.Printf("img res  =%v\n", res[0])
-	}
-	// refControl := "http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl="
-	refControl := "https://rss.nlimpid.com/zhihu_image?image="
-	replacedstr := regex.ReplaceAllString(v[0]["content"].(string), fmt.Sprintf("<img src=\"%vhttps://pic4.zhimg.com/$1\"", refControl))
-	v[0]["content"] = replacedstr
-
 	return v
 }
