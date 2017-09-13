@@ -14,6 +14,7 @@ import (
 	"path"
 
 	"github.com/gorilla/feeds"
+	"github.com/nlimpid/rss/models"
 	"github.com/pressly/chi"
 )
 
@@ -69,54 +70,8 @@ func ToZhihuRss(name string) string {
 	return rss
 }
 
-func ToRsfffs() string {
-	now := time.Now()
-	feed := &feeds.Feed{
-		Title:       "jmoiron.net blog",
-		Link:        &feeds.Link{Href: "http://jmoiron.net/blog"},
-		Description: "discussion about tech, footie, photos",
-		Author:      &feeds.Author{Name: "Jason Moiron", Email: "jmoiron@jmoiron.net"},
-		Created:     now,
-	}
-	feed.Items = []*feeds.Item{
-		&feeds.Item{
-			Title:       "Logic-less Template Redux",
-			Link:        &feeds.Link{Href: "http://jmoiron.net/blog/logicless-template-redux/"},
-			Description: "More thoughts on logicless templates",
-			Created:     now,
-		},
-		&feeds.Item{
-			Title:       "Limiting Concurrency in Go",
-			Link:        &feeds.Link{Href: "http://jmoiron.net/blog/limiting-concurrency-in-go/"},
-			Description: "A discussion on controlled parallelism in golang",
-			Author:      &feeds.Author{Name: "Jason Moiron", Email: "jmoiron@jmoiron.net"},
-			Created:     now,
-		},
-	}
-	rss, err := feed.ToRss()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// fmt.Println(rss)
-	return rss
-}
-
 // ZhihuPost 总的post
-type ZhihuPost struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-}
-
-// ZhihuItem 每一条文章
-type ZhihuItem struct {
-	Title       string `json:"title"`
-	Link        string
-	Description string `json:"content"`
-	Created     time.Time
-}
-
-func getPost(name string) (ZhihuPost, error) {
+func getPost(name string) (models.ZhihuPost, error) {
 	c := http.Client{
 		Timeout: 1 * time.Minute,
 	}
@@ -129,10 +84,9 @@ func getPost(name string) (ZhihuPost, error) {
 	resp, err := c.Do(req)
 	if err != nil {
 		log.Printf("getPost Do %v\n", err)
-		return ZhihuPost{}, err
+		return models.ZhihuPost{}, err
 	}
-
-	zhiPost := ZhihuPost{}
+	zhiPost := models.ZhihuPost{}
 	body, _ := ioutil.ReadAll(resp.Body)
 
 	err = json.Unmarshal(body, &zhiPost)
