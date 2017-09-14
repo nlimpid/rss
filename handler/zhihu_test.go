@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"regexp"
 	"testing"
+
+	"github.com/nlimpid/rss/models"
 )
 
 func Test_getPost(t *testing.T) {
@@ -14,11 +16,19 @@ func Test_getPost(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ZhihuPost
+		want models.ZhihuPost
 	}{
 		// TODO: Add test cases.
-		{"test1", args{"undefined"}, ZhihuPost{"前端黑板报",
-			"前端黑板报由各大互联网公司的资深前端和技术专家合力运营，致力于传播高质量的行业资讯，分享有态度的意见观点。"}},
+		{
+			"test1", args{"oh-hard"},
+			models.ZhihuPost{
+				Name:        "硬派健身",
+				Description: "每日一篇质量长文，微信公众：硬派健身。",
+				Link:        "/oh-hard",
+				Avatar: models.ZhihuPostAvatar{
+					ID:       "d8752eeb8ddb0ca382afc836de6224c0",
+					Template: "https://pic1.zhimg.com/{id}_{size}.jpg",
+				}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -40,11 +50,17 @@ func Test_getItem(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want ZhihuPost
+		want models.ZhihuPost
 	}{
-		// TODO: Add test cases.
-		{"test1", args{"undefined"}, ZhihuPost{"前端黑板报",
-			"前端黑板报由各大互联网公司的资深前端和技术专家合力运营，致力于传播高质量的行业资讯，分享有态度的意见观点。"}},
+		{
+			"test1", args{"oh-hard"},
+			models.ZhihuPost{
+				Name:        "硬派健身",
+				Description: "每日一篇质量长文，微信公众：硬派健身。",
+				Avatar: models.ZhihuPostAvatar{
+					ID:       "0a47432f4ef552ceaf1da5a9fe11a443",
+					Template: "https://pic4.zhimg.com/{id}_{size}.jpg",
+				}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
