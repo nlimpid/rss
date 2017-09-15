@@ -141,3 +141,31 @@ func getItem(name string) []map[string]interface{} {
 	}
 	return v
 }
+
+func getItems(name, limit, offset string) (items []models.ZhihuItem) {
+	c := http.Client{
+		Timeout: 1 * time.Minute,
+	}
+	url := fmt.Sprintf("%v%v%v", postURL, name, "/posts")
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		log.Printf("getPost NewRequest %v\n", err)
+	}
+	values := req.URL.Query()
+	values.Add("limit", limit)
+	values.Add("offset", offset)
+	req.URL.RawQuery = values.Encode()
+	resp, err := c.Do(req)
+	if err != nil {
+		log.Printf("getPost Do %v\n", err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil
+	}
+	err = json.Unmarshal(body, &items)
+	if err != nil {
+		log.Println(err)
+	}
+	return
+}

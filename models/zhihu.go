@@ -36,8 +36,9 @@ func (a ZhihuPostAvatar) FullAvatar() string {
 
 // ZhihuItem represent single article
 type ZhihuItem struct {
-	Title       string `json:"title"`
-	Link        string
-	Description string `json:"content"`
-	Created     time.Time
+	Title       string    `json:"title"`
+	TitleImage  string    `json:"titleImage"`
+	Link        string    `json:"url"`
+	Description string    `json:"content"`
+	Created     time.Time `json:"publishedTime"`
 }
