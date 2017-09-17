@@ -3,7 +3,8 @@ package models
 import (
 	"fmt"
 	"regexp"
-	"time"
+
+	"github.com/gorilla/feeds"
 )
 
 var baseURL = "https://zhuanlan.zhihu.com"
@@ -27,6 +28,16 @@ func (z ZhihuPost) FullLink() string {
 	return fmt.Sprintf("%s%s", baseURL, z.Link)
 }
 
+// GetRssImage generate the image struct
+func (z ZhihuPost) GetRssImage() *feeds.RssImage {
+	fi := feeds.RssImage{
+		Title: "avatar",
+		Url:   z.Avatar.FullAvatar(),
+	}
+	return &fi
+
+}
+
 // FullAvatar get the biggest img from the template
 func (a ZhihuPostAvatar) FullAvatar() string {
 	re, _ := regexp.Compile("^(.*){id}_{size}(.jpg)$")
@@ -36,9 +47,9 @@ func (a ZhihuPostAvatar) FullAvatar() string {
 
 // ZhihuItem represent single article
 type ZhihuItem struct {
-	Title       string    `json:"title"`
-	TitleImage  string    `json:"titleImage"`
-	Link        string    `json:"url"`
-	Description string    `json:"content"`
-	Created     time.Time `json:"publishedTime"`
+	Title       string `json:"title"`
+	TitleImage  string `json:"titleImage"`
+	Link        string `json:"url"`
+	Description string `json:"content"`
+	Created     string `json:"publishedTime"`
 }

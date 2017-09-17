@@ -169,3 +169,43 @@ func getItems(name, limit, offset string) (items []models.ZhihuItem) {
 	}
 	return
 }
+
+// ToZhihuRssFeed generate rss feed for zhihuan article
+func ToZhihuRssFeed(name string) string {
+	zhihuFeed, err := getPost(name)
+	if err != nil {
+		return ""
+	}
+	rssFeed := &feeds.RssFeed{
+		Title:       zhihuFeed.Name,
+		Link:        zhihuFeed.FullLink(),
+		Description: zhihuFeed.Description,
+		Image:       zhihuFeed.GetRssImage(),
+	}
+	zhihuItems := getItems(name, "20", "0")
+	for _, v := range zhihuItems {
+		rssFeed.Items = append(rssFeed.Items, &feeds.RssItem{
+			Title:       v.Title,
+			Link:        v.Link,
+			Description: v.Description,
+			PubDate:     v.Created,
+		})
+	}
+	log.Println(rssFeed.FeedXml())
+	return "hello"
+}
+
+// ZhihuZhuanlan 获取文章
+func ZhihuZhuanlan(w http.ResponseWriter, r *http.Request) {
+	// Assume if we've reach this far, we can access the article
+	// context because this handler is a child of the ArticleCtx
+	// middleware. The worst case, the recoverer middleware will save us.
+
+	articleName := chi.URLParam(r, "articleName")
+
+	url := fmt.Sprintf("%v%v", baseURL, articleName)
+	log.Println(url)
+	// w.Write([]byte(ToRss()))
+	w.Write([]byte(ToZhihuRssFeed(articleName)))
+
+}
