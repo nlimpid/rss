@@ -176,23 +176,27 @@ func ToZhihuRssFeed(name string) string {
 	if err != nil {
 		return ""
 	}
-	rssFeed := &feeds.RssFeed{
+	rssFeed := &feeds.Feed{
 		Title:       zhihuFeed.Name,
-		Link:        zhihuFeed.FullLink(),
+		Link:        &feeds.Link{Href: zhihuFeed.FullLink()},
 		Description: zhihuFeed.Description,
-		Image:       zhihuFeed.GetRssImage(),
 	}
 	zhihuItems := getItems(name, "20", "0")
 	for _, v := range zhihuItems {
-		rssFeed.Items = append(rssFeed.Items, &feeds.RssItem{
+		rssFeed.Items = append(rssFeed.Items, &feeds.Item{
 			Title:       v.Title,
-			Link:        v.Link,
+			Link:        &feeds.Link{Href: v.Link},
 			Description: v.Description,
-			PubDate:     v.Created,
+			//TODO: Created(time.Time)
 		})
 	}
-	log.Println(rssFeed.FeedXml())
-	return "hello"
+	rss := (&feeds.Rss{rssFeed}).RssFeed()
+	rss.Image = zhihuFeed.GetRssImage()
+	result, err := feeds.ToXML(rss)
+	if err != nil {
+		return "hello"
+	}
+	return result
 }
 
 // ZhihuZhuanlan 获取文章
