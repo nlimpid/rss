@@ -191,8 +191,11 @@ func ToZhihuRssFeed(name string) string {
 			PubDate:     v.Created,
 		})
 	}
-	log.Println(rssFeed.FeedXml())
-	return "hello"
+	result, err := feeds.ToXML(rssFeed)
+	if err != nil {
+		return "something wrong"
+	}
+	return result
 }
 
 // ZhihuZhuanlan 获取文章

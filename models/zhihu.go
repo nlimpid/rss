@@ -30,9 +30,12 @@ func (z ZhihuPost) FullLink() string {
 
 // GetRssImage generate the image struct
 func (z ZhihuPost) GetRssImage() *feeds.RssImage {
+	originImg := z.Avatar.FullAvatar()
+	refBase := "https://rss.nlimpid.com/zhihu_image?image="
+	image := fmt.Sprintf("%s%s", refBase, originImg)
 	fi := feeds.RssImage{
 		Title: "avatar",
-		Url:   z.Avatar.FullAvatar(),
+		Url:   image,
 	}
 	return &fi
 
