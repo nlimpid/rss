@@ -45,6 +45,14 @@ func (a ZhihuPostAvatar) FullAvatar() string {
 	return re.ReplaceAllString(a.Template, replaced)
 }
 
+// ReplacedImg to avoid origin check
+func (a ZhihuPostAvatar) ReplacedImg() string {
+	originImg := a.FullAvatar()
+	refBase := "https://rss.nlimpid.com/zhihu_image?image="
+	image := fmt.Sprintf("%s%s", refBase, originImg)
+	return image
+}
+
 // ZhihuItem represent single article
 type ZhihuItem struct {
 	Title       string `json:"title"`

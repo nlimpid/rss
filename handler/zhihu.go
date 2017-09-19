@@ -190,9 +190,10 @@ func ToZhihuRssFeed(name string) string {
 			//TODO: Created(time.Time)
 		})
 	}
-	rss := (&feeds.Rss{rssFeed}).RssFeed()
-	rss.Image = zhihuFeed.GetRssImage()
-	result, err := feeds.ToXML(rss)
+	atom := (&feeds.Atom{rssFeed}).AtomFeed()
+	atom.Icon = zhihuFeed.Avatar.ReplacedImg()
+	atom.Logo = zhihuFeed.Avatar.ReplacedImg()
+	result, err := feeds.ToXML(atom)
 	if err != nil {
 		return "hello"
 	}
